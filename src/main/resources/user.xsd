@@ -1,0 +1,102 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://generated.soap.springboot.stuthemp.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://generated.soap.springboot.stuthemp.com"
+           elementFormDefault="qualified">
+
+
+    <xs:complexType name="roleInfo">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="userInfo">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="login" type="xs:string" />
+            <xs:element name="password" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="serviceStatus">
+        <xs:sequence>
+            <xs:element name="status" type="xs:string" />
+            <xs:element name="errors" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="addUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" type="tns:userInfo" />
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" type="tns:roleInfo" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="addUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserByLoginRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="userLogin" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getUserByLoginResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" type="tns:userInfo" />
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" type="tns:roleInfo" />
+                <xs:element maxOccurs="1" minOccurs="0" name="serviceStatus" type="tns:serviceStatus" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" type="tns:userInfo" />
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" type="tns:roleInfo" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="updateUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="userLogin" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="deleteUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="getAllUsersRequest">
+
+    </xs:element>
+    <xs:element name="getAllUsersResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="users" type="tns:userInfo" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
