@@ -31,21 +31,20 @@ public class RequestHandler {
 
     public ServiceStatus validateUser(UserInfo userInfo, List<RoleInfo> roleInfoList) {
         ServiceStatus serviceStatus = new ServiceStatus();
-        StringBuilder errors = new StringBuilder("");
 
         String login = userInfo.getLogin();
         String name = userInfo.getName();
         String password = userInfo.getPassword();
 
         if(login.isEmpty())
-            errors.append("Login not provided, ");
+            serviceStatus.getErrors().add("Login not provided");
         if(name.isEmpty())
-            errors.append("Name not provided, ");
+            serviceStatus.getErrors().add("Name not provided");
         if(password.isEmpty())
-            errors.append("Password not provided, ");
+            serviceStatus.getErrors().add("Password not provided");
         else  {
             if (!isPasswordValid(password)) {
-                errors.append("Password does not match pattern, ");
+                serviceStatus.getErrors().add("Password does not match pattern");
             }
 
         }
@@ -54,18 +53,16 @@ public class RequestHandler {
 
         for (RoleInfo providedRole: roleInfoList) {
             if (!existingRoles.contains(providedRole.getName())) {
-                errors.append("Role ").append(providedRole.getName()).append(" does not exist, ");
+                serviceStatus.getErrors().add("Role "+ providedRole.getName() + " does not exist");
             }
         }
 
-        if (!errors.toString().isEmpty()){
-            serviceStatus.setStatus("false");
-            String errorString = errors.toString();
-            serviceStatus.setErrors(errorString.substring(0,errors.lastIndexOf(", ")));
+        if (!serviceStatus.getErrors().isEmpty()){
+            serviceStatus.setSuccess(false);
             return serviceStatus;
         }
 
-        serviceStatus.setStatus("true");
+        serviceStatus.setSuccess(true);
         return serviceStatus;
     }
 

@@ -60,7 +60,7 @@ public class RequestHandlerTest {
         ServiceStatus serviceStatus = requestHandler.validateUser(userInfo, Collections.emptyList());
 
         //Assert
-        Assert.assertEquals("true",serviceStatus.getStatus());
+        Assert.assertTrue(serviceStatus.isSuccess());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class RequestHandlerTest {
         ServiceStatus serviceStatus = requestHandler.validateUser(userInfo, Collections.singletonList(roleInfo));
 
         //Assert
-        Assert.assertEquals("true",serviceStatus.getStatus());
+        Assert.assertTrue(serviceStatus.isSuccess());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class RequestHandlerTest {
         ServiceStatus serviceStatus = requestHandler.validateUser(userInfo, Collections.singletonList(roleInfo));
 
         //Assert
-        Assert.assertEquals("false",serviceStatus.getStatus());
+        Assert.assertFalse(serviceStatus.isSuccess());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class RequestHandlerTest {
         ServiceStatus serviceStatus = requestHandler.validateUser(userInfo, Collections.singletonList(roleInfo));
 
         //Assert
-        Assert.assertEquals("false",serviceStatus.getStatus());
+        Assert.assertFalse(serviceStatus.isSuccess());
     }
 
     @Test
@@ -148,7 +148,7 @@ public class RequestHandlerTest {
         ServiceStatus serviceStatus = requestHandler.validateUser(userInfo, Collections.singletonList(roleInfo));
 
         //Assert
-        Assert.assertEquals("false",serviceStatus.getStatus());
+        Assert.assertFalse(serviceStatus.isSuccess());
     }
 
     @Test
@@ -170,6 +170,6 @@ public class RequestHandlerTest {
         ServiceStatus serviceStatus = requestHandler.validateUser(userInfo, Collections.singletonList(roleInfo));
 
         //Assert
-        Assert.assertEquals("false",serviceStatus.getStatus());
+        Assert.assertFalse("false",serviceStatus.isSuccess());
     }
 }

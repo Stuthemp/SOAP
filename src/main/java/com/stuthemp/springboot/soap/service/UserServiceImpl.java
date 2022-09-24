@@ -63,8 +63,8 @@ public class UserServiceImpl implements UserService {
             return response;
 
         } else {
-            serviceStatus.setStatus("false");
-            serviceStatus.setErrors("EntityNotFoundException");
+            serviceStatus.setSuccess(false);
+            serviceStatus.getErrors().add("EntityNotFoundException");
             response.setServiceStatus(serviceStatus);
             return response;
         }
@@ -79,13 +79,11 @@ public class UserServiceImpl implements UserService {
         ServiceStatus serviceStatus = requestHandler.validateUser(requestUser, roleInfoList);
 
         if(userExists(requestUser.getLogin())) {
-            serviceStatus.setStatus("false");
-            String errors = serviceStatus.getErrors() == null ? "" : serviceStatus.getErrors();
-            errors = errors.concat(", User already exist");
-            serviceStatus.setErrors(errors);
+            serviceStatus.setSuccess(false);
+            serviceStatus.getErrors().add("User already exist");
         }
 
-        if(!(serviceStatus.getErrors() == null)) {
+        if(!(serviceStatus.getErrors().isEmpty())) {
             response.setServiceStatus(serviceStatus);
             return response;
         } else {
@@ -102,7 +100,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(requestUser.getPassword());
             userRepository.save(user);
 
-            serviceStatus.setStatus("true");
+            serviceStatus.setSuccess(true);
             response.setServiceStatus(serviceStatus);
             return response;
         }
@@ -118,13 +116,13 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findUserByLogin(login);
         if(optionalUser.isPresent()) {
             userRepository.delete(optionalUser.get());
-            serviceStatus.setStatus("true");
+            serviceStatus.setSuccess(true);
             response.setServiceStatus(serviceStatus);
             return response;
         }
 
-        serviceStatus.setStatus("false");
-        serviceStatus.setErrors("User with provided login was not found");
+        serviceStatus.setSuccess(false);
+        serviceStatus.getErrors().add("User with provided login was not found");
         response.setServiceStatus(serviceStatus);
 
         return response;
@@ -138,7 +136,7 @@ public class UserServiceImpl implements UserService {
         List<RoleInfo> roleInfoList = request.getRoles();
         ServiceStatus status = requestHandler.validateUser(requestUser, roleInfoList);
 
-        if(!(status.getErrors() == null)) {
+        if(!(status.getErrors().isEmpty())) {
             response.setServiceStatus(status);
             return response;
         }
@@ -154,12 +152,12 @@ public class UserServiceImpl implements UserService {
             }
 
             userRepository.save(newUser);
-            status.setStatus("true");
+            status.setSuccess(true);
             response.setServiceStatus(status);
             return response;
         }
-        status.setStatus("false");
-        status.setErrors("User Not found");
+        status.setSuccess(false);
+        status.getErrors().add("User Not found");
         response.setServiceStatus(status);
         return response;
     }
