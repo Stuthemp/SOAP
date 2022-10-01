@@ -1,17 +1,21 @@
 package com.stuthemp.springboot.soap.service;
 
 import com.stuthemp.springboot.soap.generated.*;
+import com.stuthemp.springboot.soap.model.Role;
+import com.stuthemp.springboot.soap.model.User;
+
+import java.util.List;
 
 public interface UserService {
 
-    GetUserByLoginResponse getUserByLogin(GetUserByLoginRequest request);
+    User getUserByLogin(String login);
 
-    AddUserResponse addUser(AddUserRequest request);
+    boolean addUser(UserInfo userInfo, List<RoleInfo> roles);
 
-    DeleteUserResponse deleteUser(DeleteUserRequest request);
+    boolean deleteUser(String login);
 
-    UpdateUserResponse updateUser(UpdateUserRequest request);
+    boolean updateUser(UserInfo userInfo, List<RoleInfo> roles);
 
-    GetAllUsersResponse getAllUsers();
+    List<UserInfo> getAllUsers();
 
 }

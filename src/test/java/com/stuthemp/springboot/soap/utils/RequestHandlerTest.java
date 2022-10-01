@@ -29,9 +29,9 @@ public class RequestHandlerTest {
     RoleRepository roleRepository;
 
     private final String CORRECT_PASSWORD = "pa55W0rd";
-    private final String CORRECT_ROLE_NAME = "Admin";
-    private final String INCORRECT_ROLE_NAME = "Teacher";
     private final String INCORRECT_PASSWORD = "bad password";
+
+    private final long CORRECT_ROLE_ID = 1L;
     private final String LOGIN = "login";
     private final String NAME = "name";
     private static List<Role> validRoles;
@@ -72,7 +72,7 @@ public class RequestHandlerTest {
         userInfo.setPassword(CORRECT_PASSWORD);
 
         RoleInfo roleInfo = new RoleInfo();
-        roleInfo.setName(CORRECT_ROLE_NAME);
+        roleInfo.setId(CORRECT_ROLE_ID);
 
         Mockito.doReturn(validRoles)
             .when(roleRepository)
@@ -94,7 +94,6 @@ public class RequestHandlerTest {
         userInfo.setPassword(INCORRECT_PASSWORD);
 
         RoleInfo roleInfo = new RoleInfo();
-        roleInfo.setName(CORRECT_ROLE_NAME);
 
         Mockito.doReturn(validRoles)
             .when(roleRepository)
@@ -116,7 +115,6 @@ public class RequestHandlerTest {
         userInfo.setPassword(CORRECT_PASSWORD);
 
         RoleInfo roleInfo = new RoleInfo();
-        roleInfo.setName(CORRECT_ROLE_NAME);
 
         Mockito.doReturn(validRoles)
             .when(roleRepository)
@@ -138,7 +136,6 @@ public class RequestHandlerTest {
         userInfo.setPassword(CORRECT_PASSWORD);
 
         RoleInfo roleInfo = new RoleInfo();
-        roleInfo.setName(CORRECT_ROLE_NAME);
 
         Mockito.doReturn(validRoles)
             .when(roleRepository)
@@ -160,7 +157,6 @@ public class RequestHandlerTest {
         userInfo.setPassword(CORRECT_PASSWORD);
 
         RoleInfo roleInfo = new RoleInfo();
-        roleInfo.setName(INCORRECT_ROLE_NAME);
 
         Mockito.doReturn(validRoles)
             .when(roleRepository)

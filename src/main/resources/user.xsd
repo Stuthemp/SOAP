@@ -6,7 +6,7 @@
 
     <xs:complexType name="roleInfo">
         <xs:sequence>
-            <xs:element name="name" type="xs:string" />
+            <xs:element name="id" type="xs:long" />
         </xs:sequence>
     </xs:complexType>
 

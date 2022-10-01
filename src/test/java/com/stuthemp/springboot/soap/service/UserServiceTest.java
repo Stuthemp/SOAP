@@ -47,6 +47,8 @@ public class UserServiceTest {
     private final String EXISTING_LOGIN = "user1";
     private final String NOT_EXISTING_LOGIN = "user3";
 
+    private final long CORRECT_ROLE_ID = 1L;
+
     private static ServiceStatus SUCCESS_STATUS;
 
     @BeforeClass
@@ -89,55 +91,11 @@ public class UserServiceTest {
             .findUserByLogin(EXISTING_LOGIN);
 
         //Act
-        GetUserByLoginResponse response = userService.getUserByLogin(correctRequest);
+        User response = userService.getUserByLogin(correctRequest.getUserLogin());
 
         //Assert
-        Assert.assertEquals(EXISTING_LOGIN, response.getUser().getLogin());
+        Assert.assertEquals(EXISTING_LOGIN, response.getLogin());
     }
-
-    @Test
-    public void getUserByLoginReturnsFalseForNonExistingUser() {
-        //Arrange
-        GetUserByLoginRequest correctRequest = new GetUserByLoginRequest();
-        correctRequest.setUserLogin(NOT_EXISTING_LOGIN);
-
-        Mockito.doReturn(Optional.empty())
-            .when(userRepository)
-            .findUserByLogin(NOT_EXISTING_LOGIN);
-
-        //Act
-        GetUserByLoginResponse response = userService.getUserByLogin(correctRequest);
-
-        //Assert
-        Assert.assertFalse(response.getServiceStatus().isSuccess());
-    }
-
-//    @Test
-//    public void addUserCreatesUserIfNotExists() {
-//        AddUserRequest addUserRequest = new AddUserRequest();
-//        UserInfo notExistingUser = new UserInfo();
-//        notExistingUser.setLogin(NOT_EXISTING_LOGIN);
-//        notExistingUser.setPassword("12Lkf");
-//        notExistingUser.setName("Max");
-//        RoleInfo roleInfo = new RoleInfo();
-//        roleInfo.setName(validRoles.get(0).getName());
-//        addUserRequest.setUser(notExistingUser);
-//        addUserRequest.getRoles().add(roleInfo);
-//
-//        Mockito.doReturn(Optional.empty())
-//            .when(userRepository)
-//            .findUserByLogin(NOT_EXISTING_LOGIN);
-//
-//        Mockito.doReturn(SUCCESS_STATUS)
-//            .when(requestHandler)
-//            .validateUser(notExistingUser,addUserRequest.getRoles());
-//
-//        AddUserResponse response = userService.addUser(addUserRequest);
-//
-//        Assert.assertTrue(response.getServiceStatus().isSuccess());
-//
-//    }
-
     @Test
     public void addUserDoesNotCreateExistingUser() {
         AddUserRequest addUserRequest = new AddUserRequest();
@@ -146,7 +104,6 @@ public class UserServiceTest {
         notExistingUser.setPassword("12Lkf");
         notExistingUser.setName("Max");
         RoleInfo roleInfo = new RoleInfo();
-        roleInfo.setName(validRoles.get(0).getName());
         addUserRequest.setUser(notExistingUser);
         addUserRequest.getRoles().add(roleInfo);
 
@@ -158,37 +115,10 @@ public class UserServiceTest {
             .when(requestHandler)
             .validateUser(notExistingUser,addUserRequest.getRoles());
 
-        AddUserResponse response = userService.addUser(addUserRequest);
+        boolean response = userService.addUser(addUserRequest.getUser(), addUserRequest.getRoles());
 
-        Assert.assertFalse(response.getServiceStatus().isSuccess());
-
+        Assert.assertFalse(response);
     }
-
-//    @Test
-//    public void updateUserUpdatesExistingUser() {
-//        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-//        UserInfo notExistingUser = new UserInfo();
-//        notExistingUser.setLogin(EXISTING_LOGIN);
-//        notExistingUser.setPassword("12Lkf");
-//        notExistingUser.setName("Max");
-//        RoleInfo roleInfo = new RoleInfo();
-//        roleInfo.setName(validRoles.get(0).getName());
-//        updateUserRequest.setUser(notExistingUser);
-//        updateUserRequest.getRoles().add(roleInfo);
-//
-//        Mockito.doReturn(Optional.of(existingUsers.get(0)))
-//            .when(userRepository)
-//            .findUserByLogin(EXISTING_LOGIN);
-//
-//        Mockito.doReturn(SUCCESS_STATUS)
-//            .when(requestHandler)
-//            .validateUser(notExistingUser,updateUserRequest.getRoles());
-//
-//        UpdateUserResponse response = userService.updateUser(updateUserRequest);
-//
-//        Assert.assertTrue(response.getServiceStatus().isSuccess());
-//    }
-
     @Test
     public void updateUserDoesNotUpdateNotExistingUser() {
         UpdateUserRequest updateUserRequest = new UpdateUserRequest();
@@ -197,7 +127,6 @@ public class UserServiceTest {
         notExistingUser.setPassword("12Lkf");
         notExistingUser.setName("Max");
         RoleInfo roleInfo = new RoleInfo();
-        roleInfo.setName(validRoles.get(0).getName());
         updateUserRequest.setUser(notExistingUser);
         updateUserRequest.getRoles().add(roleInfo);
 
@@ -209,11 +138,10 @@ public class UserServiceTest {
             .when(requestHandler)
             .validateUser(notExistingUser,updateUserRequest.getRoles());
 
-        UpdateUserResponse response = userService.updateUser(updateUserRequest);
+        boolean response = userService.updateUser(updateUserRequest.getUser(), updateUserRequest.getRoles());
 
-        Assert.assertFalse("false", response.getServiceStatus().isSuccess());
+        Assert.assertFalse(response);
     }
-
     @Test
     public void deleteUserDeletesExistingUser() {
         //Arrange
@@ -225,12 +153,11 @@ public class UserServiceTest {
             .findUserByLogin(EXISTING_LOGIN);
 
         //Act
-        DeleteUserResponse response = userService.deleteUser(correctRequest);
+        boolean response = userService.deleteUser(correctRequest.getUserLogin());
 
         //Assert
-        Assert.assertTrue(response.getServiceStatus().isSuccess());
+        Assert.assertTrue(response);
     }
-
     @Test
     public void deleteUserDoesNotDeleteNotExistingUser() {
         //Arrange
@@ -242,12 +169,11 @@ public class UserServiceTest {
             .findUserByLogin(NOT_EXISTING_LOGIN);
 
         //Act
-        DeleteUserResponse response = userService.deleteUser(correctRequest);
+        boolean response = userService.deleteUser(correctRequest.getUserLogin());
 
         //Assert
-        Assert.assertFalse(response.getServiceStatus().isSuccess());
+        Assert.assertFalse(response);
     }
-
     @Test
     public void getAllUsersTest() {
 
@@ -255,9 +181,10 @@ public class UserServiceTest {
             .when(userRepository)
             .findAll();
 
-        GetAllUsersResponse response = userService.getAllUsers();
+        List<UserInfo> response = userService.getAllUsers();
 
-        Assert.assertEquals(existingUsers.size(), response.getUsers().size());
+
+        Assert.assertEquals(existingUsers.size(), response.size());
     }
 
 }
